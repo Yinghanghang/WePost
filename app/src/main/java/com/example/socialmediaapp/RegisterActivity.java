@@ -19,6 +19,10 @@ import com.example.socialmediaapp.databinding.ActivityRegisterBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
     ActivityRegisterBinding binding;
@@ -96,8 +100,26 @@ public class RegisterActivity extends AppCompatActivity {
                         // Sign in success, dismiss dialog and start register activity
                         progressDialog.dismiss();
                         FirebaseUser user = mAuth.getCurrentUser();
+                        HashMap<Object, String> hashMap = new HashMap<>();
+
+                        String userEmail = user.getEmail();
+                        String userId = user.getUid();
+
+                        hashMap.put("userEmail", userEmail);
+                        hashMap.put("userID", userId);
+                        hashMap.put("userName", "");
+                        hashMap.put("userImage", "");
+
+                        // create an instance of firebase database
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        // a location to store the data
+                        DatabaseReference reference = database.getReference("users");
+                        // put the data that is stored in a hashmap into the database
+                        reference.child(userId).setValue(hashMap);
+
+
                         Toast.makeText(RegisterActivity.this, "Registration succeeded.", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(RegisterActivity.this, ProfileActivity.class));
+                        startActivity(new Intent(RegisterActivity.this, StartActivity.class));
                         finish();
                     } else {
                         // Sign in fails, notify the user.

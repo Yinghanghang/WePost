@@ -1,34 +1,57 @@
 package com.example.socialmediaapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
+import com.example.socialmediaapp.Fragment.ContactsFragment;
+import com.example.socialmediaapp.Fragment.HomeFragment;
+import com.example.socialmediaapp.Fragment.ProfileFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class ProfileActivity extends AppCompatActivity {
+public class StartActivity extends AppCompatActivity {
 
     //firebase auth
     FirebaseAuth firebaseAuth;
-    TextView profile;
+    BottomNavigationView bottomNavigationView;
+    Fragment selectedFragment = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_start);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Profile");
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        profile = findViewById(R.id.p_profile);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch(item.getItemId()){
+                case R.id.nav_home:
+                    selectedFragment = new HomeFragment();
+                    break;
+                case R.id.nav_contacts:
+                    selectedFragment = new ContactsFragment();
+                    break;
+                case R.id.nav_profile:
+                    selectedFragment = new ProfileFragment();
+                    break;
+            }
+
+            return true;
+        });
+
     }
 
 
@@ -38,12 +61,13 @@ public class ProfileActivity extends AppCompatActivity {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if(user != null){
             // stay in user profile page
-            profile.setText(user.getEmail());
+
         } else {
-            startActivity(new Intent(ProfileActivity.this, MainActivity.class));
+            startActivity(new Intent(StartActivity.this, MainActivity.class));
             finish();
         }
     }
+
 
     //inflate options menu
     @Override

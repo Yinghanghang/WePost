@@ -20,6 +20,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -86,7 +90,23 @@ public class LoginActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                             // Sign in success, redirect to user profile
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
+                            HashMap<Object, String> hashMap = new HashMap<>();
+
+                            String userEmail = user.getEmail();
+                            String userId = user.getUid();
+                            hashMap.put("userEmail", userEmail);
+                            hashMap.put("userID", userId);
+                            hashMap.put("userName", "");
+                            hashMap.put("userImage", "");
+
+                            // create an instance of firebase database
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            // a location to store the data
+                            DatabaseReference reference = database.getReference("users");
+                            // put the data that is stored in a hashmap into the database
+                            reference.child(userId).setValue(hashMap);
+
+                            Intent intent = new Intent(LoginActivity.this, StartActivity.class);
                             startActivity(intent);
                         } else {
                             progressDialog.dismiss();
