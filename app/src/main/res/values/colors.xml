@@ -21,5 +21,8 @@
     <color name="ShadowBlue">#6F87A6</color>
     <color name="PrimaryDark">#3262c4</color>
     <color name="Silver">#C0C0C0</color>
+    <color name="DarkGrey">#a9a9a9</color>
+
+
 
 </resources>

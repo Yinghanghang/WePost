@@ -31,9 +31,12 @@ public class StartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Profile");
+        //actionBar.setTitle("Profile");
 
         firebaseAuth = FirebaseAuth.getInstance();
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                new HomeFragment()).commit();
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -48,10 +51,13 @@ public class StartActivity extends AppCompatActivity {
                     selectedFragment = new ProfileFragment();
                     break;
             }
+            if(selectedFragment != null) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        selectedFragment).commit();
+            }
 
             return true;
         });
-
     }
 
 
