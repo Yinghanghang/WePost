@@ -30,8 +30,6 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        ActionBar actionBar = getSupportActionBar();
-
         firebaseAuth = FirebaseAuth.getInstance();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -71,7 +69,6 @@ public class StartActivity extends AppCompatActivity {
             finish();
         }
     }
-
 
     //inflate options menu
     @Override

@@ -3,6 +3,7 @@ package com.example.socialmediaapp.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ public class ContactsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         firebaseAuth = FirebaseAuth.getInstance();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Contacts");
         super.onCreate(savedInstanceState);
     }
 

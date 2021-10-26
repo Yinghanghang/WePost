@@ -11,9 +11,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="190dp"
-            android:background="@color/ShadowBlue"
-           >
+            android:layout_height="190dp">
 
         </RelativeLayout>
 
@@ -27,10 +25,13 @@
                 android:id="@+id/p_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:layout_marginStart="20dp"
-                android:textSize="25sp" />
+                android:text="Name"
+                android:textColor="@color/ShadowBlue"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="25dp"
+                android:textSize="23sp" />
 
+            <!--
             <TextView
                 android:id="@+id/p_email"
                 android:layout_width="match_parent"
@@ -38,8 +39,8 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
-                android:textColor="@color/white" />
-
+                android:textColor="@color/ShadowBlue" />
+            -->
         </LinearLayout>
 
 
@@ -67,7 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginTop="-5dp"
+                    android:layout_marginTop="5dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -82,7 +83,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="123"
-                            android:textColor="@color/white"
+                            android:textColor="@color/ShadowBlue"
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
@@ -91,7 +92,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="Posts"
-                            android:textColor="@color/white" />
+                            android:textColor="@color/ShadowBlue" />
 
                     </LinearLayout>
 
@@ -107,7 +108,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="123"
-                            android:textColor="@color/white"
+                            android:textColor="@color/ShadowBlue"
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
@@ -116,7 +117,7 @@
                             android:layout_height="wrap_content"
                             android:text="Followers"
                             android:gravity="center"
-                            android:textColor="@color/white" />
+                            android:textColor="@color/ShadowBlue" />
 
                     </LinearLayout>
 
@@ -132,7 +133,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="123"
-                            android:textColor="@color/white"
+                            android:textColor="@color/ShadowBlue"
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
@@ -141,20 +142,20 @@
                             android:layout_height="wrap_content"
                             android:text="Following"
                             android:gravity="center"
-                            android:textColor="@color/white" />
+                            android:textColor="@color/ShadowBlue" />
 
                     </LinearLayout>
                 </LinearLayout>
 
                 <Button
                     android:id="@+id/p_edit_profile"
-                    android:layout_width="150dp"
+                    android:layout_width="220dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginLeft="20dp"
                     android:text="Edit Profile"
                     android:textColor="@color/Charcoal"
-                    android:backgroundTint="@color/LightGrey" />
+                    android:backgroundTint="#ededed" />
 
             </LinearLayout>
 

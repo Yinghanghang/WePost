@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -48,6 +50,7 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Profile");
         super.onCreate(savedInstanceState);
     }
 
@@ -64,7 +67,7 @@ public class ProfileFragment extends Fragment {
 
         image = view.findViewById(R.id.p_image);
         name = view.findViewById(R.id.p_name);
-        email = view.findViewById(R.id.p_email);
+        //email = view.findViewById(R.id.p_email);
         button = view.findViewById(R.id.p_edit_profile);
 
         Query query = databaseReference.orderByChild("userEmail").equalTo(user.getEmail());
@@ -77,7 +80,7 @@ public class ProfileFragment extends Fragment {
                     String str_email = ds.child("userEmail").getValue().toString();
                     String str_image = ds.child("userImage").getValue().toString();
                     name.setText(str_name);
-                    email.setText(str_email);
+                    //email.setText(str_email);
 
                     try {
                         Picasso.get().load(str_image).into(image);

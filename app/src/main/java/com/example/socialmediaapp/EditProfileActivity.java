@@ -2,6 +2,7 @@ package com.example.socialmediaapp;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -42,8 +43,8 @@ import java.util.HashMap;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-    private ImageView close, photo;
-    private TextView save, change_photo;
+    private ImageView photo;
+    private TextView cancel, save, change_photo;
     private EditText username;
 
     private FirebaseUser user;
@@ -58,7 +59,10 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-        close = findViewById(R.id.e_close);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Edit Profile");
+
+        cancel = findViewById(R.id.e_cancel);
         photo = findViewById(R.id.e_photo);
         save = findViewById(R.id.e_save);
         change_photo = findViewById(R.id.e_change_photo);
@@ -88,7 +92,7 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
-        close.setOnClickListener(new View.OnClickListener() {
+        cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();

@@ -3,6 +3,7 @@ package com.example.socialmediaapp.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -24,7 +25,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Home");
         super.onCreate(savedInstanceState);
     }
 
@@ -40,6 +41,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_main, menu);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Home");
         super.onCreateOptionsMenu(menu, inflater);
     }
 

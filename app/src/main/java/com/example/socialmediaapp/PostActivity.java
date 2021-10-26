@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.Continuation;
@@ -37,8 +38,8 @@ public class PostActivity extends AppCompatActivity {
     private StorageTask uploadTask;
     StorageReference storageRef;
 
-    ImageView close, photo;
-    TextView post;
+    ImageView photo;
+    TextView post, cancel;
     EditText caption;
 
     @Override
@@ -46,14 +47,17 @@ public class PostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
 
-        close = findViewById(R.id.p_close);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Add Post");
+
+        cancel = findViewById(R.id.p_cancel);
         photo = findViewById(R.id.p_image_added);
         post = findViewById(R.id.p_post);
         caption = findViewById(R.id.p_caption);
 
         storageRef = FirebaseStorage.getInstance().getReference("uploads");
 
-        close.setOnClickListener(new View.OnClickListener() {
+        cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(PostActivity.this, StartActivity.class));
