@@ -88,24 +88,25 @@ public class LoginActivity extends AppCompatActivity {
                             progressDialog.dismiss();
                             Toast.makeText(LoginActivity.this, "Login succeeded.",
                                     Toast.LENGTH_SHORT).show();
-                            // Sign in success, redirect to user profile
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            HashMap<Object, String> hashMap = new HashMap<>();
 
-                            String userEmail = user.getEmail();
-                            String userId = user.getUid();
-                            hashMap.put("userEmail", userEmail);
-                            hashMap.put("userID", userId);
-                            hashMap.put("userName", "");
-                            hashMap.put("userImage", "");
+//                            FirebaseUser user = mAuth.getCurrentUser();
+//                            HashMap<Object, String> hashMap = new HashMap<>();
+//
+//                            String userEmail = user.getEmail();
+//                            String userId = user.getUid();
+//                            hashMap.put("userEmail", userEmail);
+//                            hashMap.put("userID", userId);
+//                            hashMap.put("userName", "");
+//                            hashMap.put("userImage", "");
+//
+//                            // create an instance of firebase database
+//                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+//                            // a location to store the data
+//                            DatabaseReference reference = database.getReference("users");
+//                            // put the data that is stored in a hashmap into the database
+//                            reference.child(userId).setValue(hashMap);
 
-                            // create an instance of firebase database
-                            FirebaseDatabase database = FirebaseDatabase.getInstance();
-                            // a location to store the data
-                            DatabaseReference reference = database.getReference("users");
-                            // put the data that is stored in a hashmap into the database
-                            reference.child(userId).setValue(hashMap);
-
+                            // Sign in success, redirect to start activity
                             Intent intent = new Intent(LoginActivity.this, StartActivity.class);
                             startActivity(intent);
                         } else {

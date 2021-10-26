@@ -31,7 +31,6 @@ public class StartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start);
 
         ActionBar actionBar = getSupportActionBar();
-        //actionBar.setTitle("Profile");
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -67,7 +66,6 @@ public class StartActivity extends AppCompatActivity {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if(user != null){
             // stay in user profile page
-
         } else {
             startActivity(new Intent(StartActivity.this, MainActivity.class));
             finish();
@@ -88,6 +86,9 @@ public class StartActivity extends AppCompatActivity {
         if(id == R.id.action_logout) {
             firebaseAuth.signOut();
             onStart();
+        }
+        if(id == R.id.action_add_post) {
+            startActivity(new Intent(StartActivity.this, PostActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

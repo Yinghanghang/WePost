@@ -100,14 +100,14 @@ public class RegisterActivity extends AppCompatActivity {
                         // Sign in success, dismiss dialog and start register activity
                         progressDialog.dismiss();
                         FirebaseUser user = mAuth.getCurrentUser();
-                        HashMap<Object, String> hashMap = new HashMap<>();
+                        HashMap<String, Object> hashMap = new HashMap<>();
 
                         String userEmail = user.getEmail();
                         String userId = user.getUid();
 
                         hashMap.put("userEmail", userEmail);
                         hashMap.put("userID", userId);
-                        hashMap.put("userName", "");
+                        hashMap.put("userName", username.getText().toString());
                         hashMap.put("userImage", "");
 
                         // create an instance of firebase database
@@ -116,7 +116,6 @@ public class RegisterActivity extends AppCompatActivity {
                         DatabaseReference reference = database.getReference("users");
                         // put the data that is stored in a hashmap into the database
                         reference.child(userId).setValue(hashMap);
-
 
                         Toast.makeText(RegisterActivity.this, "Registration succeeded.", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(RegisterActivity.this, StartActivity.class));
