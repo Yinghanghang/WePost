@@ -41,7 +41,7 @@ public class ProfileFragment extends Fragment {
     DatabaseReference databaseReference;
 
     ImageView image;
-    TextView name, email;
+    TextView name;
     Button button;
 
     public ProfileFragment(){
@@ -68,7 +68,6 @@ public class ProfileFragment extends Fragment {
 
         image = view.findViewById(R.id.p_image);
         name = view.findViewById(R.id.p_name);
-        //email = view.findViewById(R.id.p_email);
         button = view.findViewById(R.id.p_edit_profile);
 
         Query query = databaseReference.orderByChild("userEmail").equalTo(user.getEmail());
@@ -78,10 +77,8 @@ public class ProfileFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds: dataSnapshot.getChildren()) {
                     String str_name = ds.child("userName").getValue().toString();
-                    String str_email = ds.child("userEmail").getValue().toString();
                     String str_image = ds.child("userImage").getValue().toString();
                     name.setText(str_name);
-                    //email.setText(str_email);
 
                     try {
                         Picasso.get().load(str_image).into(image);
@@ -125,13 +122,11 @@ public class ProfileFragment extends Fragment {
             firebaseAuth.signOut();
             checkUserStatus();
         }
-        if(id == R.id.action_add_post) {
-            startActivity(new Intent(getActivity(), PostActivity.class));
-        }
         return super.onOptionsItemSelected(item);
     }
 
     private void checkUserStatus() {
+        FirebaseUser user = firebaseAuth.getCurrentUser();
         if(user != null) {
             //stay in current page
         } else {
