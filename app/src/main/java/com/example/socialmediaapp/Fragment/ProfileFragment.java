@@ -50,6 +50,7 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Profile");
         super.onCreate(savedInstanceState);
     }
@@ -111,6 +112,9 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_main, menu);
+        menu.findItem(R.id.action_search).setVisible(false);
+        menu.findItem(R.id.action_add_post).setVisible(false);
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 

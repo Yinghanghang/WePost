@@ -1,19 +1,18 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F1EDED"
     tools:context="com.example.socialmediaapp.Fragment.ProfileFragment">
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="190dp">
-
-        </RelativeLayout>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,23 +30,14 @@
                 android:layout_marginTop="25dp"
                 android:textSize="23sp" />
 
-            <!--
-            <TextView
-                android:id="@+id/p_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                android:textColor="@color/ShadowBlue" />
-            -->
         </LinearLayout>
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="120dp"
-            android:layout_marginTop="100dp"
+            android:id="@+id/layout"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -159,10 +149,17 @@
 
             </LinearLayout>
 
+        </LinearLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:id="@+id/recycler_view"/>
 
         </LinearLayout>
 
-    </RelativeLayout>
+    </ScrollView>
 
-
-</ScrollView>
+</RelativeLayout>

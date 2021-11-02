@@ -41,6 +41,7 @@ public class PostActivity extends AppCompatActivity {
     ImageView photo;
     TextView post, cancel;
     EditText caption;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class PostActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Add Post");
+        progressDialog = new ProgressDialog(this);
 
         cancel = findViewById(R.id.p_cancel);
         photo = findViewById(R.id.p_image_added);
@@ -89,10 +91,12 @@ public class PostActivity extends AppCompatActivity {
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
+
+
     private void uploadImage(){
-        final ProgressDialog pd = new ProgressDialog(this);
-        pd.setMessage("Publishing post");
-        pd.show();
+
+        progressDialog.setMessage("Publishing post");
+        progressDialog.show();
         if (imageUri != null){
             final StorageReference fileReference = storageRef.child(System.currentTimeMillis()
                     + "." + getFileExtension(imageUri));
@@ -125,7 +129,10 @@ public class PostActivity extends AppCompatActivity {
                         hashMap.put("postAuthor", FirebaseAuth.getInstance().getCurrentUser().getUid());
 
                         databaseReference.child(postid).setValue(hashMap);
-                        pd.dismiss();
+
+                        if (progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
 
                         startActivity(new Intent(PostActivity.this, StartActivity.class));
                         finish();

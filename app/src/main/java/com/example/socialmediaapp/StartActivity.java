@@ -31,7 +31,8 @@ public class StartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start);
 
         firebaseAuth = FirebaseAuth.getInstance();
-
+        checkUserStatus();
+        // home fragment default
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new HomeFragment()).commit();
 
@@ -57,37 +58,14 @@ public class StartActivity extends AppCompatActivity {
         });
     }
 
-
-    @Override
-    public void onStart() {
-        super.onStart();
+    private void checkUserStatus() {
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        if(user != null){
-            // stay in user profile page
+        if(user != null) {
+            //stay in current page
         } else {
             startActivity(new Intent(StartActivity.this, MainActivity.class));
             finish();
         }
-    }
-
-    //inflate options menu
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        int id = item.getItemId();
-        if(id == R.id.action_logout) {
-            firebaseAuth.signOut();
-            onStart();
-        }
-        if(id == R.id.action_add_post) {
-            startActivity(new Intent(StartActivity.this, PostActivity.class));
-        }
-        return super.onOptionsItemSelected(item);
     }
 
 }
