@@ -92,7 +92,6 @@ public class PostActivity extends AppCompatActivity {
     }
 
 
-
     private void uploadImage(){
 
         progressDialog.setMessage("Publishing post");

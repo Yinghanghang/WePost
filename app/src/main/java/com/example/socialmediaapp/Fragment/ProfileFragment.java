@@ -1,15 +1,15 @@
 package com.example.socialmediaapp.Fragment;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,9 +20,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.socialmediaapp.EditProfileActivity;
 import com.example.socialmediaapp.MainActivity;
-import com.example.socialmediaapp.PostActivity;
+import com.example.socialmediaapp.Model.Post;
+import com.example.socialmediaapp.Model.User;
 import com.example.socialmediaapp.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,13 +38,13 @@ import com.squareup.picasso.Picasso;
 
 public class ProfileFragment extends Fragment {
     FirebaseAuth firebaseAuth;
-    FirebaseUser user;
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
+    FirebaseUser firebaseUser;
+
+    String profileid;
 
     ImageView image;
-    TextView name;
-    Button button;
+    TextView username, posts, followers, following;
+    Button edit_profile;
 
     public ProfileFragment(){
 
@@ -62,49 +64,143 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        user = firebaseAuth.getCurrentUser();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("users");
+        firebaseUser = firebaseAuth.getCurrentUser();
+
+        SharedPreferences prefs = getContext().getSharedPreferences("PREFS", MODE_PRIVATE);
+        profileid = prefs.getString("profileid", "none");
 
         image = view.findViewById(R.id.p_image);
-        name = view.findViewById(R.id.p_name);
-        button = view.findViewById(R.id.p_edit_profile);
+        username = view.findViewById(R.id.p_username);
+        posts = view.findViewById(R.id.posts);
+        followers = view.findViewById(R.id.followers);
+        following = view.findViewById(R.id.following);
+        edit_profile = view.findViewById(R.id.p_edit_profile);
 
-        Query query = databaseReference.orderByChild("userEmail").equalTo(user.getEmail());
-        //This method is triggered once when the listener is attached and again every time the data, including children, changes.
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds: dataSnapshot.getChildren()) {
-                    String str_name = ds.child("userName").getValue().toString();
-                    String str_image = ds.child("userImage").getValue().toString();
-                    name.setText(str_name);
+        userInfo();
+        getFollowers();
+        getNumberOfPosts();
 
-                    try {
-                        Picasso.get().load(str_image).into(image);
-                    } catch (Exception e) {
-                        Picasso.get().load(R.drawable.ic_add_image).into(image);
-                    }
-                }
-            }
+        if (profileid.equals(firebaseUser.getUid())){
+            edit_profile.setText("Edit Profile");
+        } else {
+            checkFollow();
+        }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-
-        button.setOnClickListener(new View.OnClickListener() {
+        edit_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String btn = button.getText().toString();
+                String btn = edit_profile.getText().toString();
                if(btn.equals("Edit Profile")) {
                    startActivity(new Intent(getContext(), EditProfileActivity.class));
+               } else if (btn.equals("follow")) {
+                   FirebaseDatabase.getInstance().getReference().child("follow").child(firebaseUser.getUid())
+                           .child("following").child(profileid).setValue(true);
+                   FirebaseDatabase.getInstance().getReference().child("follow").child(profileid)
+                           .child("followers").child(firebaseUser.getUid()).setValue(true);
+               } else if(btn.equals("following")){
+                   FirebaseDatabase.getInstance().getReference().child("follow").child(firebaseUser.getUid())
+                           .child("following").child(profileid).removeValue();
+                   FirebaseDatabase.getInstance().getReference().child("follow").child(profileid)
+                           .child("followers").child(firebaseUser.getUid()).removeValue();
                }
             }
         });
 
         return view;
     }
+
+    private void userInfo(){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(profileid);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (getContext() == null){
+                    return;
+                }
+                User user = dataSnapshot.getValue(User.class);
+
+                Glide.with(getContext()).load(user.getUserImage()).into(image);
+                username.setText(user.getUserName());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void checkFollow(){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
+                .child("follow").child(firebaseUser.getUid()).child("following");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child(profileid).exists()){
+                    edit_profile.setText("following");
+                } else{
+                    edit_profile.setText("follow");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void getFollowers(){
+        DatabaseReference reference_followers = FirebaseDatabase.getInstance().getReference("follow").child(profileid).child("followers");
+        reference_followers.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                followers.setText(""+dataSnapshot.getChildrenCount());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        DatabaseReference reference_following = FirebaseDatabase.getInstance().getReference("follow").child(profileid).child("following");
+        reference_following.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                following.setText(""+dataSnapshot.getChildrenCount());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void getNumberOfPosts(){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("posts");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int i = 0;
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Post post = snapshot.getValue(Post.class);
+                    if (post.getPostID().equals(profileid)){
+                        i++;
+                    }
+                }
+                posts.setText(""+i);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -126,7 +222,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void checkUserStatus() {
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+        FirebaseUser user =  firebaseAuth.getCurrentUser();
         if(user != null) {
             //stay in current page
         } else {
