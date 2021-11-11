@@ -78,12 +78,16 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 postList.clear();
+                FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Post post = snapshot.getValue(Post.class);
                     for (String id : followingList){
                         if (post.getPostAuthor().equals(id)){
                             postList.add(post);
                         }
+                    }
+                    if(post.getPostAuthor().equals(firebaseUser.getUid())){
+                        postList.add(post);
                     }
                 }
 

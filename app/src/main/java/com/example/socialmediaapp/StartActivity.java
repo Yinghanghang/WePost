@@ -34,9 +34,9 @@ public class StartActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         checkUserStatus();
 
-        Bundle intent = getIntent().getExtras();
-        if(intent != null) {
-            String publisher = intent.getString("publisherid");
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            String publisher = extras.getString("publisherid");
             SharedPreferences.Editor editor = getSharedPreferences("PREFS", MODE_PRIVATE).edit();
             editor.putString("profileid", publisher);
             editor.apply();

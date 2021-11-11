@@ -94,8 +94,10 @@ public class PostActivity extends AppCompatActivity {
 
     private void uploadImage(){
 
-        progressDialog.setMessage("Publishing post");
-        progressDialog.show();
+            progressDialog.setMessage("Publishing post");
+            progressDialog.show();
+
+
         if (imageUri != null){
             final StorageReference fileReference = storageRef.child(System.currentTimeMillis()
                     + "." + getFileExtension(imageUri));
@@ -129,11 +131,11 @@ public class PostActivity extends AppCompatActivity {
 
                         databaseReference.child(postid).setValue(hashMap);
 
-                        if (progressDialog.isShowing()) {
-                            progressDialog.dismiss();
-                        }
+//                        if (progressDialog.isShowing()) {
+//                            progressDialog.dismiss();
+//                        }
 
-                        startActivity(new Intent(PostActivity.this, StartActivity.class));
+//                        startActivity(new Intent(PostActivity.this, StartActivity.class));
                         finish();
                     } else {
                         Toast.makeText(PostActivity.this, "Failed", Toast.LENGTH_SHORT).show();
@@ -147,7 +149,7 @@ public class PostActivity extends AppCompatActivity {
             });
 
         } else {
-            Toast.makeText(PostActivity.this, "No image selected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PostActivity.this, "Please select an image", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -163,6 +165,15 @@ public class PostActivity extends AppCompatActivity {
             Toast.makeText(this, "Crop activity failed!", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(PostActivity.this, StartActivity.class));
             finish();
+        }
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        if ( progressDialog!=null &&  progressDialog.isShowing()){
+            progressDialog.dismiss();
         }
     }
 }
