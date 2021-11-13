@@ -131,11 +131,6 @@ public class PostActivity extends AppCompatActivity {
 
                         databaseReference.child(postid).setValue(hashMap);
 
-//                        if (progressDialog.isShowing()) {
-//                            progressDialog.dismiss();
-//                        }
-
-//                        startActivity(new Intent(PostActivity.this, StartActivity.class));
                         finish();
                     } else {
                         Toast.makeText(PostActivity.this, "Failed", Toast.LENGTH_SHORT).show();

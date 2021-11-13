@@ -144,18 +144,27 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginLeft="20dp"
                     android:text="Edit Profile"
-                    android:textColor="@color/Charcoal"
-                    android:backgroundTint="#ededed" />
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/ShadowBlue" />
 
             </LinearLayout>
 
         </LinearLayout>
 
 
-    <androidx.recyclerview.widget.RecyclerView
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
+        android:text="My Posts"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:textColor="@color/ShadowBlue" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:id="@+id/recycler_view"/>
 
         </LinearLayout>

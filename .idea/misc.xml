@@ -6,8 +6,10 @@
         <entry key="../../../../layout/custom_preview.xml" value="0.24427083333333333" />
         <entry key="app/src/main/res/drawable-anydpi/ic_add.xml" value="0.15729166666666666" />
         <entry key="app/src/main/res/drawable-anydpi/ic_add_image.xml" value="0.2212962962962963" />
+        <entry key="app/src/main/res/drawable-anydpi/ic_close.xml" value="0.17685185185185184" />
         <entry key="app/src/main/res/drawable-anydpi/ic_contacts.xml" value="0.21296296296296297" />
         <entry key="app/src/main/res/drawable-anydpi/ic_home.xml" value="0.2212962962962963" />
+        <entry key="app/src/main/res/drawable-anydpi/ic_more.xml" value="0.19166666666666668" />
         <entry key="app/src/main/res/drawable-anydpi/ic_profile.xml" value="0.2212962962962963" />
         <entry key="app/src/main/res/drawable-anydpi/ic_search.xml" value="0.15729166666666666" />
         <entry key="app/src/main/res/drawable/button_background.xml" value="0.2484375" />
@@ -22,6 +24,7 @@
         <entry key="app/src/main/res/drawable/round_image_view.xml" value="0.2484375" />
         <entry key="app/src/main/res/layout/activity_comment.xml" value="0.22916666666666666" />
         <entry key="app/src/main/res/layout/activity_edit_profile.xml" value="0.21510416666666668" />
+        <entry key="app/src/main/res/layout/activity_follower.xml" value="0.22916666666666666" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.23229166666666667" />
         <entry key="app/src/main/res/layout/activity_post.xml" value="0.21510416666666668" />
@@ -39,6 +42,7 @@
         <entry key="app/src/main/res/layout/userpost_item.xml" value="0.22916666666666666" />
         <entry key="app/src/main/res/menu/bottom_navigation.xml" value="0.22916666666666666" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/post_menu.xml" value="0.22916666666666666" />
       </map>
     </option>
   </component>

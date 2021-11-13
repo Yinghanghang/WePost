@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.example.socialmediaapp.Fragment.ProfileFragment;
 import com.example.socialmediaapp.Model.User;
 import com.example.socialmediaapp.R;
+import com.example.socialmediaapp.StartActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -33,12 +34,14 @@ import java.util.List;
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     private Context mContext;
     private List<User> mUsers;
+    private boolean isFragment;
 
     private FirebaseUser firebaseUser;
 
-    public UserAdapter(Context context, List<User> users){
+    public UserAdapter(Context context, List<User> users, boolean isFragment){
         mContext = context;
         mUsers = users;
+        this.isFragment = isFragment;
     }
 
     @NonNull
@@ -67,13 +70,19 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (isFragment) {
+                    SharedPreferences.Editor editor = mContext.getSharedPreferences("PREFS", MODE_PRIVATE).edit();
+                    editor.putString("profileid", user.getUserID());
+                    editor.apply();
 
-                SharedPreferences.Editor editor = mContext.getSharedPreferences("PREFS", MODE_PRIVATE).edit();
-                editor.putString("profileid", user.getUserID());
-                editor.apply();
-
-                ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new ProfileFragment()).commit();
+                    ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            new ProfileFragment()).commit();
+                } else {
+                    // can't jump from an activity(FollowerActivity) to a fragment(ProfileFragment)
+                    Intent intent = new Intent(mContext, StartActivity.class);
+                    intent.putExtra("publisherid", user.getUserID());
+                    mContext.startActivity(intent);
+                }
             }
         });
 

@@ -25,7 +25,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.socialmediaapp.Adapter.MyPostAdapter;
+import com.example.socialmediaapp.Adapter.PostAdapter;
 import com.example.socialmediaapp.EditProfileActivity;
+import com.example.socialmediaapp.FollowerActivity;
 import com.example.socialmediaapp.MainActivity;
 import com.example.socialmediaapp.Model.Post;
 import com.example.socialmediaapp.Model.User;
@@ -56,6 +58,7 @@ public class ProfileFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private MyPostAdapter myPostAdapter;
+    private PostAdapter postAdapter;
     private List<Post> postList;
 
     public ProfileFragment(){
@@ -90,11 +93,17 @@ public class ProfileFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
-        LinearLayoutManager mLayoutManager = new GridLayoutManager(getContext(), 3);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        mLayoutManager.setReverseLayout(true);
+        mLayoutManager.setStackFromEnd(true);
+        //LinearLayoutManager mLayoutManager = new GridLayoutManager(getContext(), 3);
         recyclerView.setLayoutManager(mLayoutManager);
+
         postList = new ArrayList<>();
-        myPostAdapter = new MyPostAdapter(getContext(), postList);
-        recyclerView.setAdapter(myPostAdapter);
+        postAdapter = new PostAdapter(getContext(), postList);
+        recyclerView.setAdapter(postAdapter);
+//        myPostAdapter = new MyPostAdapter(getContext(), postList);
+//        recyclerView.setAdapter(myPostAdapter);
 
         userInfo();
         getFollowers();
@@ -124,6 +133,26 @@ public class ProfileFragment extends Fragment {
                    FirebaseDatabase.getInstance().getReference().child("follow").child(profileid)
                            .child("followers").child(firebaseUser.getUid()).removeValue();
                }
+            }
+        });
+
+        followers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), FollowerActivity.class);
+                intent.putExtra("id", profileid);
+                intent.putExtra("title", "Followers");
+                startActivity(intent);
+            }
+        });
+
+        following.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), FollowerActivity.class);
+                intent.putExtra("id", profileid);
+                intent.putExtra("title", "Following");
+                startActivity(intent);
             }
         });
 
@@ -234,7 +263,8 @@ public class ProfileFragment extends Fragment {
                     }
                 }
                 Collections.reverse(postList);
-                myPostAdapter.notifyDataSetChanged();
+                //myPostAdapter.notifyDataSetChanged();
+                postAdapter.notifyDataSetChanged();
             }
 
             @Override

@@ -89,6 +89,12 @@ public class CommentActivity extends AppCompatActivity {
         readComments();
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
+
     private void addComment(){
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("comments").child(postid);

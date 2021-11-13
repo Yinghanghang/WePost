@@ -15,10 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SocialMediaApp">
         <activity
+            android:name=".FollowerActivity"
+            android:exported="true" />
+        <activity
             android:name=".CommentActivity"
-            android:exported="true"
-            android:parentActivityName=".StartActivity"
-            />
+            android:exported="true" />
         <activity
             android:name=".PostActivity"
             android:exported="true" />
