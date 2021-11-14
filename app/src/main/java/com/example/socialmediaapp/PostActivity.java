@@ -5,6 +5,8 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
@@ -19,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -29,7 +32,9 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class PostActivity extends AppCompatActivity {
 
@@ -70,8 +75,9 @@ public class PostActivity extends AppCompatActivity {
         post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uploadImage();
-                finish();
+                uploadData();
+//                finish();
+                dismissProgressDialog();
             }
         });
 
@@ -91,14 +97,12 @@ public class PostActivity extends AppCompatActivity {
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
-
-    private void uploadImage(){
-
-            progressDialog.setMessage("Publishing post");
-            progressDialog.show();
-
+    private void uploadData(){
+        progressDialog.setMessage("Publishing post");
+        progressDialog.show();
 
         if (imageUri != null){
+            // post with image
             final StorageReference fileReference = storageRef.child(System.currentTimeMillis()
                     + "." + getFileExtension(imageUri));
 
@@ -128,12 +132,13 @@ public class PostActivity extends AppCompatActivity {
                         hashMap.put("postImage", myUrl);
                         hashMap.put("postCaption", caption.getText().toString());
                         hashMap.put("postAuthor", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                        hashMap.put("postTime", System.currentTimeMillis());
 
                         databaseReference.child(postid).setValue(hashMap);
-
+                        Toast.makeText(PostActivity.this, "Post published", Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
-                        Toast.makeText(PostActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PostActivity.this, "Posting Failed", Toast.LENGTH_SHORT).show();
                     }
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -144,7 +149,35 @@ public class PostActivity extends AppCompatActivity {
             });
 
         } else {
-            Toast.makeText(PostActivity.this, "Please select an image", Toast.LENGTH_SHORT).show();
+            // post without image
+            String description = caption.getText().toString();
+            if(TextUtils.isEmpty(description)) {
+                Toast.makeText(PostActivity.this, "Please enter description", Toast.LENGTH_SHORT).show();
+            } else {
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("posts");
+                String postid = databaseReference.push().getKey();
+
+                HashMap<String, Object> hashMap = new HashMap<>();
+                hashMap.put("postID", postid);
+                hashMap.put("postImage", "noImage");
+                hashMap.put("postCaption", caption.getText().toString());
+                hashMap.put("postAuthor", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                hashMap.put("postTime", System.currentTimeMillis());
+
+                databaseReference.child(postid).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(PostActivity.this, "Post published", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(PostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
         }
     }
 
@@ -163,12 +196,16 @@ public class PostActivity extends AppCompatActivity {
         }
     }
 
+    private void dismissProgressDialog() {
+        if ( progressDialog!=null &&  progressDialog.isShowing()){
+            progressDialog.dismiss();
+        }
+    }
+
     @Override
     protected void onDestroy()
     {
         super.onDestroy();
-        if ( progressDialog!=null &&  progressDialog.isShowing()){
-            progressDialog.dismiss();
-        }
+        dismissProgressDialog();
     }
 }

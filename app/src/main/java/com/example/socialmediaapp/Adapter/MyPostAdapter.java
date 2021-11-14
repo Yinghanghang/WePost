@@ -4,10 +4,12 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -18,7 +20,9 @@ import com.example.socialmediaapp.Fragment.PostDetailFragment;
 import com.example.socialmediaapp.Model.Post;
 import com.example.socialmediaapp.R;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.ViewHolder> {
 
@@ -37,12 +41,20 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.ViewHolder
             return new ViewHolder(view);
     }
 
+    private String formatPostTime(long postTime) {
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        calendar.setTimeInMillis(postTime);
+        return DateFormat.format("MM/dd/yyyy", calendar).toString();
+    }
+
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         final Post post = mPosts.get(position);
 
         Glide.with(mContext).load(post.getPostImage()).into(holder.post_image);
+        holder.time.setText(formatPostTime(post.getPostTime()));
 
         holder.post_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,10 +77,12 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView post_image;
+        public TextView time;
 
         public ViewHolder(View itemView) {
             super(itemView);
             post_image = itemView.findViewById(R.id.post_image);
+            time = itemView.findViewById(R.id.time);
         }
     }
 }

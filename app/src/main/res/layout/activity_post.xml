@@ -25,13 +25,14 @@
 
                 <TextView
                     android:id="@+id/p_cancel"
-                    android:text="CANCEL"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="16sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true" />
+                    android:layout_alignParentLeft="true"
+                    android:text="CANCEL"
+                    android:textStyle="bold"
+                    android:textColor="@color/ShadowBlue"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -40,8 +41,9 @@
                     android:text="POST"
                     android:id="@+id/p_post"
                     android:textSize="16sp"
+                    android:textStyle="bold"
                     android:layout_centerVertical="true"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/ShadowBlue"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true" />
 

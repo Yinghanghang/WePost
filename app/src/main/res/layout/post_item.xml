@@ -19,7 +19,7 @@
                 android:src = "@mipmap/ic_launcher"/>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:orientation="vertical">
@@ -38,8 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/time"
-                android:text="time"
-                android:layout_gravity="center_vertical"
+                android:text="11/13/2021 10:52 AM"
                 android:textSize="16sp"
                 android:textColor="@color/LightGrey"/>
 
@@ -51,8 +50,7 @@
                 android:layout_height="30dp"
                 android:src="@drawable/ic_more"
                 android:id="@+id/more"
-                android:scaleType="fitXY"
-                android:layout_marginLeft="200dp"
+                android:layout_marginLeft="110dp"
                 android:layout_marginTop="15dp"/>
 
         </LinearLayout>

@@ -58,8 +58,11 @@ public class HomeFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+
+        //show newest post first
         mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
+        //set layout to recyclerview
         recyclerView.setLayoutManager(mLayoutManager);
 
         postList = new ArrayList<>();

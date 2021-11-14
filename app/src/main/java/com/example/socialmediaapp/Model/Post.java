@@ -1,16 +1,20 @@
 package com.example.socialmediaapp.Model;
 
+import java.util.Date;
+
 public class Post {
     private String postID;
     private String postImage;
     private String postCaption;
     private String postAuthor;
+    private long postTime;
 
-    public Post(String postID, String postImage, String postCaption, String postAuthor) {
+    public Post(String postID, String postImage, String postCaption, String postAuthor, long postTime) {
         this.postID = postID;
         this.postImage = postImage;
         this.postCaption = postCaption;
         this.postAuthor = postAuthor;
+        this.postTime = postTime;
     }
 
     public Post() {
@@ -47,4 +51,8 @@ public class Post {
     public void setPostAuthor(String postAuthor) {
         this.postAuthor = postAuthor;
     }
+
+    public long getPostTime() { return postTime; }
+
+    public void setPostTime(long postTime) { this.postTime = postTime; }
 }

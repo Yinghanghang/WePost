@@ -23,7 +23,7 @@
         android:maxLines="1"
         android:text="username"
         android:textColor="@color/ShadowBlue"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:textStyle="bold" />
 
     <Button

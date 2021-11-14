@@ -94,8 +94,10 @@ public class ProfileFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+
         mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
+
         //LinearLayoutManager mLayoutManager = new GridLayoutManager(getContext(), 3);
         recyclerView.setLayoutManager(mLayoutManager);
 
@@ -262,7 +264,6 @@ public class ProfileFragment extends Fragment {
                         postList.add(post);
                     }
                 }
-                Collections.reverse(postList);
                 //myPostAdapter.notifyDataSetChanged();
                 postAdapter.notifyDataSetChanged();
             }

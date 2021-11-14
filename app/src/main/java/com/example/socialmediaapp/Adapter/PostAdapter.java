@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,8 +40,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private Context mContext;
@@ -59,11 +63,23 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         return new PostAdapter.ViewHolder(view);
     }
 
+    private String formatPostTime(long postTime) {
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        calendar.setTimeInMillis(postTime);
+        return DateFormat.format("MM/dd/yyyy hh:mm aa", calendar).toString();
+    }
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         user = FirebaseAuth.getInstance().getCurrentUser();
         Post post = mPosts.get(position);
-        Glide.with(mContext).load(post.getPostImage()).into(holder.post_image);
+
+        if(post.getPostImage().equals("noImage")) {
+            // hide post image view
+            holder.post_image.setVisibility(View.GONE);
+        } else {
+            Glide.with(mContext).load(post.getPostImage()).into(holder.post_image);
+        }
 
         if(post.getPostCaption().equals("")) {
             holder.caption.setVisibility(View.GONE);
@@ -72,9 +88,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             holder.caption.setText(post.getPostCaption());
         }
 
-        //  time.setText(post.getPostTime());
-
         authorInfo(holder.image_profile, holder.username,  post.getPostAuthor());
+        holder.time.setText(formatPostTime(post.getPostTime()));
         isLiked(post.getPostID(), holder.like);
         numberOfLikes(post.getPostID(), holder.likes);
         getComments(post.getPostID(), holder.comments);
@@ -106,6 +121,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         });
 
         holder.post_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                SharedPreferences.Editor editor = mContext.getSharedPreferences("PREFS", MODE_PRIVATE).edit();
+                editor.putString("postid", post.getPostID());
+                editor.apply();
+
+                ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new PostDetailFragment()).commit();
+            }
+        });
+
+        holder.caption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
