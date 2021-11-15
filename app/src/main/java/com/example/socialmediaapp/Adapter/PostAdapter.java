@@ -28,6 +28,7 @@ import com.example.socialmediaapp.FollowerActivity;
 import com.example.socialmediaapp.Fragment.PostDetailFragment;
 import com.example.socialmediaapp.Fragment.ProfileFragment;
 import com.example.socialmediaapp.Model.Post;
+import com.example.socialmediaapp.PostActivity;
 import com.example.socialmediaapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -78,6 +79,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             // hide post image view
             holder.post_image.setVisibility(View.GONE);
         } else {
+            holder.post_image.setVisibility(View.VISIBLE);
             Glide.with(mContext).load(post.getPostImage()).into(holder.post_image);
         }
 
@@ -156,7 +158,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()){
                             case R.id.edit:
-                                editPost(post.getPostID());
+                                //editPost(post.getPostID());
+                                Intent intent = new Intent(mContext, PostActivity.class);
+                                intent.putExtra("key", "editPost");
+                                intent.putExtra("editPostId", post.getPostID());
+                                mContext.startActivity(intent);
                                 return true;
                             case R.id.delete:
                                 FirebaseDatabase.getInstance().getReference("posts")
@@ -257,9 +263,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 username.setText(str_name);
 
                 try {
-                    Picasso.get().load(str_image).into(image_profile);
+                    Glide.with(mContext).load(str_image).into(image_profile);
                 } catch (Exception e) {
-                    Picasso.get().load(R.drawable.ic_add_image).into(image_profile);
+                    Glide.with(mContext).load(R.drawable.ic_add_image).into(image_profile);
                 }
             }
 
@@ -325,56 +331,5 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             }
         });
 
-    }
-
-    private void editPost(final String postid){
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
-        alertDialog.setTitle("Edit Post");
-
-        final EditText editText = new EditText(mContext);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        editText.setLayoutParams(lp);
-        alertDialog.setView(editText);
-
-        getText(postid, editText);
-
-        alertDialog.setPositiveButton("Edit",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                        HashMap<String, Object> hashMap = new HashMap<>();
-                        hashMap.put("postCaption", editText.getText().toString());
-
-                        FirebaseDatabase.getInstance().getReference("posts")
-                                .child(postid).updateChildren(hashMap);
-                    }
-                });
-        alertDialog.setNegativeButton("Cancel",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
-        alertDialog.show();
-    }
-
-    private void getText(String postid,  EditText editText){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("posts")
-                .child(postid);
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                editText.setText(dataSnapshot.getValue(Post.class).getPostCaption());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 }
