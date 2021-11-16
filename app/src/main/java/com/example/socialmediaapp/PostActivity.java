@@ -56,7 +56,7 @@ public class PostActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Add Post");
-        //actionBar.setSubtitle("Subtitle");
+
         progressDialog = new ProgressDialog(this);
 
         cancel = findViewById(R.id.p_cancel);
@@ -215,119 +215,6 @@ public class PostActivity extends AppCompatActivity {
         finish();
     }
 
-//    private void uploadData(String isUpdatedKey, String editPostId){
-//
-//        if (imageUri != null){
-//            // post with image
-//            final StorageReference fileReference = storageRef.child(System.currentTimeMillis()
-//                    + "." + getFileExtension(imageUri));
-//
-//            uploadTask = fileReference.putFile(imageUri);
-//            uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-//                @Override
-//                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-//                    if (!task.isSuccessful()) {
-//                        throw task.getException();
-//                    }
-//                    return fileReference.getDownloadUrl();
-//                }
-//            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-//                @Override
-//                public void onComplete(@NonNull Task<Uri> task) {
-//                    if (task.isSuccessful()) {
-//                        Uri downloadUri = task.getResult();
-//                        myUrl = downloadUri.toString();
-//
-//                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("posts");
-//
-//                        String postid;
-//                        if(isUpdatedKey.equals("editPost")) {
-//                            postid = editPostId;
-//                        } else {
-//                            // push(): add a new child at the path stored within the database reference
-//                            postid = databaseReference.push().getKey();
-//                        }
-//
-//                        HashMap<String, Object> hashMap = new HashMap<>();
-//                        hashMap.put("postID", postid);
-//                        hashMap.put("postImage", myUrl);
-//                        hashMap.put("postCaption", caption.getText().toString());
-//                        hashMap.put("postAuthor", FirebaseAuth.getInstance().getCurrentUser().getUid());
-//                        hashMap.put("postTime", System.currentTimeMillis());
-//
-//                        if(isUpdatedKey.equals("editPost")) {
-//                            databaseReference.child(postid).updateChildren(hashMap);
-//                            Toast.makeText(PostActivity.this, "Post updated", Toast.LENGTH_SHORT).show();
-//                            finish();
-//                        } else {
-//                            databaseReference.child(postid).setValue(hashMap);
-//                            Toast.makeText(PostActivity.this, "Post published", Toast.LENGTH_SHORT).show();
-//                            finish();
-//                        }
-//                    } else {
-//                        Toast.makeText(PostActivity.this, "Posting Failed", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            }).addOnFailureListener(new OnFailureListener() {
-//                @Override
-//                public void onFailure(@NonNull Exception e) {
-//                    Toast.makeText(PostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//
-//        } else {
-//            // post without image
-//            String description = caption.getText().toString();
-//            if(TextUtils.isEmpty(description)) {
-//                Toast.makeText(PostActivity.this, "Please enter description", Toast.LENGTH_SHORT).show();
-//            } else {
-//                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("posts");
-//
-//                String postid;
-//                if(isUpdatedKey.equals("editPost")) {
-//                    postid = editPostId;
-//                } else {
-//                    postid = databaseReference.push().getKey();
-//                }
-//
-//                HashMap<String, Object> hashMap = new HashMap<>();
-//                hashMap.put("postID", postid);
-//                hashMap.put("postImage", "noImage");
-//                hashMap.put("postCaption", caption.getText().toString());
-//                hashMap.put("postAuthor", FirebaseAuth.getInstance().getCurrentUser().getUid());
-//                hashMap.put("postTime", System.currentTimeMillis());
-//
-//                if(isUpdatedKey.equals("editPost")) {
-//                    databaseReference.child(postid).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-//                        @Override
-//                        public void onSuccess(Void unused) {
-//                            Toast.makeText(PostActivity.this, "Post updated", Toast.LENGTH_SHORT).show();
-//                            finish();
-//                        }
-//                    }).addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception e) {
-//                            Toast.makeText(PostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//                } else {
-//                    databaseReference.child(postid).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-//                        @Override
-//                        public void onSuccess(Void unused) {
-//                            Toast.makeText(PostActivity.this, "Post published", Toast.LENGTH_SHORT).show();
-//                            finish();
-//                        }
-//                    }).addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception e) {
-//                            Toast.makeText(PostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//                }
-//            }
-//
-//        }
-//    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

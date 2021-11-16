@@ -29,6 +29,7 @@ import com.example.socialmediaapp.Fragment.PostDetailFragment;
 import com.example.socialmediaapp.Fragment.ProfileFragment;
 import com.example.socialmediaapp.Model.Post;
 import com.example.socialmediaapp.PostActivity;
+import com.example.socialmediaapp.PostDetailActivity;
 import com.example.socialmediaapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -92,6 +93,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         authorInfo(holder.image_profile, holder.username,  post.getPostAuthor());
         holder.time.setText(formatPostTime(post.getPostTime()));
+
         isLiked(post.getPostID(), holder.like);
         numberOfLikes(post.getPostID(), holder.likes);
         getComments(post.getPostID(), holder.comments);
@@ -126,12 +128,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
 
-                SharedPreferences.Editor editor = mContext.getSharedPreferences("PREFS", MODE_PRIVATE).edit();
-                editor.putString("postid", post.getPostID());
-                editor.apply();
+                Intent intent = new Intent(mContext, PostDetailActivity.class);
+                intent.putExtra("postid", post.getPostID());
+                intent.putExtra("publisherid", post.getPostAuthor());
+                mContext.startActivity(intent);
 
-                ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new PostDetailFragment()).commit();
             }
         });
 
@@ -139,12 +140,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
 
-                SharedPreferences.Editor editor = mContext.getSharedPreferences("PREFS", MODE_PRIVATE).edit();
-                editor.putString("postid", post.getPostID());
-                editor.apply();
-
-                ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new PostDetailFragment()).commit();
+                Intent intent = new Intent(mContext, PostDetailActivity.class);
+                intent.putExtra("postid", post.getPostID());
+                intent.putExtra("publisherid", post.getPostAuthor());
+                mContext.startActivity(intent);
             }
         });
 
@@ -198,17 +197,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, CommentActivity.class);
+                //start PostDetailActivity
+                Intent intent = new Intent(mContext, PostDetailActivity.class);
                 intent.putExtra("postid", post.getPostID());
                 intent.putExtra("publisherid", post.getPostAuthor());
                 mContext.startActivity(intent);
+
             }
         });
 
         holder.comments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, CommentActivity.class);
+                Intent intent = new Intent(mContext, PostDetailActivity.class);
                 intent.putExtra("postid", post.getPostID());
                 intent.putExtra("publisherid", post.getPostAuthor());
                 mContext.startActivity(intent);
