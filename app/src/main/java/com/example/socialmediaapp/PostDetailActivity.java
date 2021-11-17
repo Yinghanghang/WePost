@@ -146,8 +146,8 @@ public class PostDetailActivity extends AppCompatActivity {
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         snapshot.getRef().removeValue();
                                         Toast.makeText(PostDetailActivity.this, "Deleted successfully", Toast.LENGTH_SHORT).show();
-//                                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-//                                                new HomeFragment()).commit();
+                                        Intent intent = new Intent(PostDetailActivity.this, StartActivity.class);
+                                        startActivity(intent);
                                     }
 
                                     @Override
@@ -385,6 +385,14 @@ public class PostDetailActivity extends AppCompatActivity {
         if ( progressDialog!=null &&  progressDialog.isShowing()){
             progressDialog.dismiss();
         }
+    }
+
+    @Override
+    public void onRestart()
+    {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
     }
 
     @Override

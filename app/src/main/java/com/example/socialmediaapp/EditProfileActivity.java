@@ -117,6 +117,7 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 updateProfile(username.getText().toString());
+                uploadImage();
                 finish();
             }
         });
@@ -135,7 +136,7 @@ public class EditProfileActivity extends AppCompatActivity {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == Activity.RESULT_OK) {
                 mImageUri = result.getUri();
-                uploadImage();
+                photo.setImageURI(mImageUri);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE){
                 Toast.makeText(this, "Crop activity failed!", Toast.LENGTH_SHORT).show();
             }

@@ -77,7 +77,7 @@ public class PostActivity extends AppCompatActivity {
             actionBar.setTitle("Edit Post");
             post.setText("Update");
             loadPostData(editPostId);
-        } else {
+        }  else {
             // add new post
         }
 
