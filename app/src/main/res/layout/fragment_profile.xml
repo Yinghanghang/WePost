@@ -151,15 +151,31 @@
 
         </LinearLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="#F0F0F0"
+            android:paddingHorizontal="120dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="My Posts"
-        android:textSize="20sp"
-        android:gravity="center"
-        android:textColor="@color/ShadowBlue" />
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_posts" />
+
+            <TextView
+                android:id="@+id/myposts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/icon"
+                android:padding="5dp"
+                android:text="My Posts"
+                android:textColor="@color/ShadowBlue"
+                android:textSize="20sp" />
+
+        </RelativeLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"

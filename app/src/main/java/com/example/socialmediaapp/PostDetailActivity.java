@@ -3,16 +3,14 @@ package com.example.socialmediaapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -20,12 +18,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.socialmediaapp.Fragment.ProfileFragment;
+import com.example.socialmediaapp.Adapter.CommentAdapter;
+import com.example.socialmediaapp.Model.Comment;
 import com.example.socialmediaapp.Model.Post;
 import com.example.socialmediaapp.Model.User;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,18 +34,24 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 public class PostDetailActivity extends AppCompatActivity {
 
-    private FirebaseUser user;
+    private FirebaseUser firebaseUser;
     String postid, publisherid;
 
     ImageView image_profile, post_image, more, like;
     TextView username, time, description, likes;
     LinearLayout profileLayout;
+
+    private RecyclerView recyclerView;
+    private CommentAdapter commentAdapter;
+    private List<Comment> commentList;
 
     EditText comment;
     ImageButton send;
@@ -81,7 +85,16 @@ public class PostDetailActivity extends AppCompatActivity {
         send = findViewById(R.id.sendBtn);
         image_avatar = findViewById(R.id.image_avatar);
 
-        user = FirebaseAuth.getInstance().getCurrentUser();
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(mLayoutManager);
+
+        commentList = new ArrayList<>();
+        commentAdapter = new CommentAdapter(this, commentList, postid);
+        recyclerView.setAdapter(commentAdapter);
+
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         checkUserStatus();
 
@@ -133,6 +146,8 @@ public class PostDetailActivity extends AppCompatActivity {
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         snapshot.getRef().removeValue();
                                         Toast.makeText(PostDetailActivity.this, "Deleted successfully", Toast.LENGTH_SHORT).show();
+//                                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+//                                                new HomeFragment()).commit();
                                     }
 
                                     @Override
@@ -141,7 +156,6 @@ public class PostDetailActivity extends AppCompatActivity {
                                     }
                                 });
 
-
                                 return true;
                             default:
                                 return false;
@@ -149,7 +163,7 @@ public class PostDetailActivity extends AppCompatActivity {
                     }
                 });
 
-                if (!publisherid.equals(user.getUid())){
+                if (!publisherid.equals(firebaseUser.getUid())){
                     popupMenu.getMenu().findItem(R.id.edit).setVisible(false);
                     popupMenu.getMenu().findItem(R.id.delete).setVisible(false);
                 }
@@ -173,10 +187,10 @@ public class PostDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (like.getTag().equals("like")) {
                     FirebaseDatabase.getInstance().getReference().child("likes").child(postid)
-                            .child(user.getUid()).setValue(true);
+                            .child(firebaseUser.getUid()).setValue(true);
                 } else {
                     FirebaseDatabase.getInstance().getReference().child("likes").child(postid)
-                            .child(user.getUid()).removeValue();
+                            .child(firebaseUser.getUid()).removeValue();
                 }
             }
         });
@@ -191,6 +205,9 @@ public class PostDetailActivity extends AppCompatActivity {
             }
         });
 
+        getImage();
+        readComments();
+
     }
 
     private void addComment() {
@@ -203,13 +220,51 @@ public class PostDetailActivity extends AppCompatActivity {
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("comment", comment.getText().toString());
-        hashMap.put("publisher", user.getUid());
+        hashMap.put("publisher", firebaseUser.getUid());
         hashMap.put("commentid", commentid);
         hashMap.put("commentTime", System.currentTimeMillis());
 
         reference.child(commentid).setValue(hashMap);
         dismissProgressDialog();
         comment.setText("");
+    }
+
+    private void getImage(){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid());
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                Glide.with(getApplicationContext()).load(user.getUserImage()).into(image_avatar);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void readComments(){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("comments").child(postid);
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                commentList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Comment comment = snapshot.getValue(Comment.class);
+                    commentList.add(comment);
+                }
+
+                commentAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void loadPostInfo() {
@@ -256,11 +311,9 @@ public class PostDetailActivity extends AppCompatActivity {
 
                 try {
                     Glide.with(getApplicationContext()).load(user.getUserImage()).into(image_profile);
-                    Glide.with(getApplicationContext()).load(user.getUserImage()).into(image_avatar);
 
                 } catch (Exception e) {
                     Glide.with(getApplicationContext()).load(R.drawable.ic_add_image).into(image_profile);
-                    Glide.with(getApplicationContext()).load(R.drawable.ic_add_image).into(image_avatar);
                 }
             }
 
@@ -273,14 +326,14 @@ public class PostDetailActivity extends AppCompatActivity {
 
     private void isLiked(){
 
-        user = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
                 .child("likes").child(postid);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child(user.getUid()).exists()){
+                if (dataSnapshot.child(firebaseUser.getUid()).exists()){
                     like.setImageResource(R.drawable.ic_liked);
                     like.setTag("liked");
                 } else{

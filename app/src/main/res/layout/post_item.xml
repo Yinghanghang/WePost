@@ -58,20 +58,21 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp">
+            android:layout_marginLeft="70dp">
 
             <TextView
                 android:id="@+id/caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
                 android:text="description"
                 android:textColor="@color/ShadowBlue" />
 
 
             <ImageView
                 android:id="@+id/post_image"
-                android:layout_width="300dp"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/caption"
                 android:layout_marginTop="10dp"
@@ -82,7 +83,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="35dp"
+            android:layout_marginLeft="55dp"
             android:padding="8dp">
 
             <ImageView
@@ -104,7 +105,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
+            android:layout_marginLeft="70dp"
             android:textColor="@color/colorPrimaryDark"
             android:textStyle="bold"
             android:textSize="15sp"
@@ -115,7 +116,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="View All 20 Comments"
-            android:layout_marginLeft="50dp"
+            android:layout_marginLeft="70dp"
             android:layout_marginTop="5dp"
             android:textColor="@color/LightGrey"
             android:id="@+id/comments"

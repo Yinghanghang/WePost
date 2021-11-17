@@ -21,9 +21,6 @@
             android:name=".FollowerActivity"
             android:exported="true" />
         <activity
-            android:name=".CommentActivity"
-            android:exported="true" />
-        <activity
             android:name=".PostActivity"
             android:exported="true" />
         <activity

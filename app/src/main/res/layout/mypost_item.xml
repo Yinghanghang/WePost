@@ -1,25 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginBottom="10dp">
 
     <TextView
+        android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/time"
+        android:layout_marginLeft="5dp"
+        android:layout_gravity="center"
         android:text="11/13/2021"
-        android:textSize="16sp"
-        android:textColor="@color/LightGrey"/>
+        android:textStyle="bold"
+        android:textColor="@color/ShadowBlue"
+        android:textSize="16sp" />
 
     <ImageView
+        android:layout_marginLeft="20dp"
         android:id="@+id/post_image"
+        android:src="@mipmap/ic_launcher"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
+
+    <TextView
+        android:id="@+id/caption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/time"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="1dp" />
+        android:textColor="@color/ShadowBlue"
+        android:layout_gravity="center"
+        android:maxLines="2"
+        android:layout_marginLeft="15dp"
+        android:text="Android Studio is the official integrated development environment for Google's Android operating system, built on JetBrains' IntelliJ IDEA software and designed specifically for Android development"/>
 
-</RelativeLayout>
+</LinearLayout>

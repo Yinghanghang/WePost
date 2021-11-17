@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,26 +30,28 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
 
-    private Context mContext;
-    private List<Comment> mComment;
+    private Context context;
+    private List<Comment> commentList;
     private String postid;
 
     private FirebaseUser firebaseUser;
 
     public CommentAdapter(Context context, List<Comment> comments, String postid){
-        mContext = context;
-        mComment = comments;
+        this.context = context;
+        commentList = comments;
         this.postid = postid;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.comment_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.comment_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -56,27 +59,29 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        Comment comment = mComment.get(position);
+        //get data
+        Comment comment = commentList.get(position);
 
         holder.comment.setText(comment.getComment());
+        holder.time.setText(formatPostTime(comment.getCommentTime()));
         getUserInfo(holder.image_profile, holder.username, comment.getPublisher());
 
         holder.username.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(mContext, StartActivity.class);
+                Intent intent = new Intent(context, StartActivity.class);
                 intent.putExtra("publisherid", comment.getPublisher());
-                mContext.startActivity(intent);
+                context.startActivity(intent);
             }
         });
 
         holder.image_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, StartActivity.class);
+                Intent intent = new Intent(context, StartActivity.class);
                 intent.putExtra("publisherid", comment.getPublisher());
-                mContext.startActivity(intent);
+                context.startActivity(intent);
             }
         });
 
@@ -85,8 +90,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             public boolean onLongClick(View view) {
                 if (comment.getPublisher().equals(firebaseUser.getUid())) {
 
-                    AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
-                    alertDialog.setTitle("Do you want to delete?");
+                    AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+                    alertDialog.setTitle("Do you want to delete this comment?");
                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "No",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -96,13 +101,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                     alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    FirebaseDatabase.getInstance().getReference("Comments")
+                                    FirebaseDatabase.getInstance().getReference("comments")
                                             .child(postid).child(comment.getCommentid())
                                             .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()){
-                                                Toast.makeText(mContext, "Deleted!", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(context, "Deleted!", Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     });
@@ -119,13 +124,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return mComment.size();
+        return commentList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView image_profile;
-        public TextView username, comment;
+        public TextView username, comment, time;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -133,6 +138,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             image_profile = itemView.findViewById(R.id.image_profile);
             username = itemView.findViewById(R.id.username);
             comment = itemView.findViewById(R.id.comment);
+            time = itemView.findViewById(R.id.time);
         }
     }
 
@@ -144,7 +150,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-                Glide.with(mContext).load(user.getUserImage()).into(imageView);
+                Glide.with(context).load(user.getUserImage()).into(imageView);
                 username.setText(user.getUserName());
             }
 
@@ -153,5 +159,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
             }
         });
+    }
+
+    private String formatPostTime(long postTime) {
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        calendar.setTimeInMillis(postTime);
+        return DateFormat.format("MM/dd/yyyy hh:mm aa", calendar).toString();
     }
 }

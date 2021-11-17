@@ -102,10 +102,8 @@ public class ProfileFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
 
         postList = new ArrayList<>();
-        postAdapter = new PostAdapter(getContext(), postList);
-        recyclerView.setAdapter(postAdapter);
-//        myPostAdapter = new MyPostAdapter(getContext(), postList);
-//        recyclerView.setAdapter(myPostAdapter);
+        myPostAdapter = new MyPostAdapter(getContext(), postList);
+        recyclerView.setAdapter(myPostAdapter);
 
         userInfo();
         getFollowers();
@@ -264,8 +262,7 @@ public class ProfileFragment extends Fragment {
                         postList.add(post);
                     }
                 }
-                //myPostAdapter.notifyDataSetChanged();
-                postAdapter.notifyDataSetChanged();
+                myPostAdapter.notifyDataSetChanged();
             }
 
             @Override
