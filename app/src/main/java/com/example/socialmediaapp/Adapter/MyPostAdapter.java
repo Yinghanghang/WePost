@@ -6,8 +6,6 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.example.socialmediaapp.Model.Post;
 import com.example.socialmediaapp.PostDetailActivity;
 import com.example.socialmediaapp.R;
+import com.example.socialmediaapp.databinding.MypostItemBinding;
 
 import java.util.Calendar;
 import java.util.List;
@@ -23,19 +22,19 @@ import java.util.Locale;
 
 public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.ViewHolder> {
 
-    private Context context;
-    private List<Post> postList;
+    private final Context context;
+    private final List<Post> posts;
 
-    public MyPostAdapter(Context context, List<Post> posts){
-            this.context = context;
-            postList = posts;
+    public MyPostAdapter(Context context, List<Post> posts) {
+        this.context = context;
+        this.posts = posts;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(context).inflate(R.layout.mypost_item, parent, false);
-            return new ViewHolder(view);
+        return new ViewHolder(
+                LayoutInflater.from(context).inflate(R.layout.mypost_item, parent, false));
     }
 
     private String formatPostTime(long postTime) {
@@ -44,66 +43,52 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.ViewHolder
         return DateFormat.format("MM/dd/yyyy", calendar).toString();
     }
 
-
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        final Post post = posts.get(position);
+        final MypostItemBinding binding = MypostItemBinding.bind(holder.itemView);
 
-        final Post post = postList.get(position);
+        binding.time.setText(formatPostTime(post.getPostTime()));
 
-        holder.time.setText(formatPostTime(post.getPostTime()));
-
-        if(post.getPostImage().equals("noImage")) {
+        if (post.getPostImage().equals("noImage")) {
             // hide post image view
-            holder.post_image.setVisibility(View.GONE);
+            binding.postImage.setVisibility(View.GONE);
         } else {
-            holder.post_image.setVisibility(View.VISIBLE);
-            Glide.with(context).load(post.getPostImage()).into(holder.post_image);
+            binding.postImage.setVisibility(View.VISIBLE);
+            Glide.with(context).load(post.getPostImage()).into(binding.postImage);
         }
 
-        if(post.getPostCaption().equals("")) {
-            holder.caption.setVisibility(View.GONE);
+        if (post.getPostCaption().equals("")) {
+            binding.caption.setVisibility(View.GONE);
         } else {
-            holder.caption.setVisibility(View.VISIBLE);
-            holder.caption.setText(post.getPostCaption());
+            binding.caption.setVisibility(View.VISIBLE);
+            binding.caption.setText(post.getPostCaption());
         }
 
-        holder.post_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, PostDetailActivity.class);
-                intent.putExtra("postid", post.getPostID());
-                intent.putExtra("publisherid", post.getPostAuthor());
-                context.startActivity(intent);
-            }
+        binding.postImage.setOnClickListener(view -> {
+            Intent intent = new Intent(context, PostDetailActivity.class);
+            intent.putExtra("postid", post.getPostID());
+            intent.putExtra("publisherid", post.getPostAuthor());
+            context.startActivity(intent);
         });
 
 
-        holder.caption.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, PostDetailActivity.class);
-                intent.putExtra("postid", post.getPostID());
-                intent.putExtra("publisherid", post.getPostAuthor());
-                context.startActivity(intent);
-            }
+        binding.caption.setOnClickListener(view -> {
+            Intent intent = new Intent(context, PostDetailActivity.class);
+            intent.putExtra("postid", post.getPostID());
+            intent.putExtra("publisherid", post.getPostAuthor());
+            context.startActivity(intent);
         });
     }
 
     @Override
     public int getItemCount() {
-        return postList.size();
+        return posts.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-
-        public ImageView post_image;
-        public TextView time, caption;
-
+    static class ViewHolder extends RecyclerView.ViewHolder {
         public ViewHolder(View itemView) {
             super(itemView);
-            post_image = itemView.findViewById(R.id.post_image);
-            time = itemView.findViewById(R.id.time);
-            caption = itemView.findViewById(R.id.caption);
         }
     }
 }

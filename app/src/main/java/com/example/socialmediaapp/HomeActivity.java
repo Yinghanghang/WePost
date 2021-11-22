@@ -1,41 +1,30 @@
 package com.example.socialmediaapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.example.socialmediaapp.Fragment.ContactsFragment;
 import com.example.socialmediaapp.Fragment.HomeFragment;
 import com.example.socialmediaapp.Fragment.ProfileFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.socialmediaapp.databinding.ActivityStartBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class StartActivity extends AppCompatActivity {
-
-    //firebase auth
-    FirebaseAuth firebaseAuth;
-    BottomNavigationView bottomNavigationView;
-    Fragment selectedFragment = null;
-
-
+public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_start);
+        ActivityStartBinding binding = ActivityStartBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        checkUserStatus();
+        refreshIfLogout();
 
         Bundle extras = getIntent().getExtras();
-        if(extras != null) {
+        if (extras != null) {
             String publisher = extras.getString("publisherid");
             SharedPreferences.Editor editor = getSharedPreferences("PREFS", MODE_PRIVATE).edit();
             editor.putString("profileid", publisher);
@@ -49,9 +38,9 @@ public class StartActivity extends AppCompatActivity {
                     new HomeFragment()).commit();
         }
 
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            switch(item.getItemId()){
+        binding.bottomNavigation.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+            switch (item.getItemId()) {
                 case R.id.nav_home:
                     selectedFragment = new HomeFragment();
                     break;
@@ -65,7 +54,7 @@ public class StartActivity extends AppCompatActivity {
                     selectedFragment = new ProfileFragment();
                     break;
             }
-            if(selectedFragment != null) {
+            if (selectedFragment != null) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         selectedFragment).commit();
             }
@@ -74,14 +63,14 @@ public class StartActivity extends AppCompatActivity {
         });
     }
 
-    private void checkUserStatus() {
+    private void refreshIfLogout() {
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        if(user != null) {
-            //stay in current page
-        } else {
-            startActivity(new Intent(StartActivity.this, MainActivity.class));
+        if (user == null) {
+            startActivity(new Intent(HomeActivity.this, MainActivity.class));
             finish();
+        } else {
+            //stay in current page
         }
     }
-
 }

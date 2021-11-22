@@ -1,38 +1,24 @@
 package com.example.socialmediaapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.socialmediaapp.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
-
-    Button register, login;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        register = findViewById(R.id.m_register);
-        login = findViewById(R.id.m_login);
-
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // start register activity
-                startActivity(new Intent(MainActivity.this, RegisterActivity.class));
-            }
+        binding.register.setOnClickListener(view -> {
+            // start register activity
+            startActivity(new Intent(MainActivity.this, RegisterActivity.class));
         });
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            }
-        });
-
+        binding.login.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, LoginActivity.class)));
     }
 }

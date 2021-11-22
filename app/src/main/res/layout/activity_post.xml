@@ -35,7 +35,7 @@
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/p_post"
+                    android:id="@+id/post"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"

@@ -29,7 +29,7 @@
     <Button
         android:layout_width="140dp"
         android:layout_height="40dp"
-        android:id="@+id/btn_follow"
+        android:id="@+id/follow"
         android:textColor="@color/ShadowBlue"
         android:text="Follow"
         android:visibility="gone"
