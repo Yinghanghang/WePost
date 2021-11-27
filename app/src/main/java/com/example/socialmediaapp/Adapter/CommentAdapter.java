@@ -57,9 +57,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
         binding.comment.setText(comment.getComment());
         binding.time.setText(formatPostTime(comment.getCommentTime()));
-        getUserInfo(binding.imageProfile, binding.username, comment.getPublisher());
+        getPublisherInfo(binding.imageProfile, binding.username, comment.getPublisher());
 
         binding.username.setOnClickListener(view -> {
+            // go to HomeActivity while sending publisherid information
             Intent intent = new Intent(context, HomeActivity.class);
             intent.putExtra("publisherid", comment.getPublisher());
             context.startActivity(intent);
@@ -72,6 +73,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         });
 
         holder.itemView.setOnLongClickListener(view -> {
+            // can only remove your own comments
             if (comment.getPublisher().equals(currentUser)) {
                 AlertDialog alertDialog = new AlertDialog.Builder(context).create();
                 alertDialog.setTitle("Do you want to delete this comment?");
@@ -99,7 +101,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         return comments.size();
     }
 
-    private void getUserInfo(ImageView imageView, TextView username, String publisherId) {
+    private void getPublisherInfo(ImageView imageView, TextView username, String publisherId) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
                 .child("users").child(publisherId);
 

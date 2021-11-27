@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">JustPost</string>
+    <string name="app_name">WePost</string>
     <string name="already_have_an_account_login">Already have an account? <font color='#01C6DB'>Login</font></string>
     <string name="not_have_an_account_register">Not have an account? <font color='#01C6DB'>Register</font></string>
     <!-- TODO: Remove or change this placeholder text -->

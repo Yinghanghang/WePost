@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.socialmediaapp.Adapter.PostAdapter;
-import com.example.socialmediaapp.MainActivity;
+import com.example.socialmediaapp.AccountActivity;
 import com.example.socialmediaapp.Model.Post;
 import com.example.socialmediaapp.PostActivity;
 import com.example.socialmediaapp.R;
@@ -150,7 +150,7 @@ public class HomeFragment extends Fragment {
     private void checkUserStatus() {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if (user == null) {
-            startActivity(new Intent(getActivity(), MainActivity.class));
+            startActivity(new Intent(getActivity(), AccountActivity.class));
             getActivity().finish();
         } else {
             //stay in current page

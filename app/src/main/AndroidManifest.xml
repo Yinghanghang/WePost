@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.socialmediaapp" >
     <!-- Internet Permission -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -18,7 +20,7 @@
             android:name=".PostDetailActivity"
             android:exported="true" />
         <activity
-            android:name=".FollowerActivity"
+            android:name=".ListActivity"
             android:exported="true" />
         <activity
             android:name=".PostActivity"
@@ -42,7 +44,7 @@
             android:name=".RegisterActivity"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".AccountActivity"
             android:exported="true" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"

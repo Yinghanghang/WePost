@@ -19,8 +19,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bumptech.glide.Glide;
 import com.example.socialmediaapp.Adapter.MyPostAdapter;
 import com.example.socialmediaapp.EditProfileActivity;
-import com.example.socialmediaapp.FollowerActivity;
-import com.example.socialmediaapp.MainActivity;
+import com.example.socialmediaapp.ListActivity;
+import com.example.socialmediaapp.AccountActivity;
 import com.example.socialmediaapp.Model.Post;
 import com.example.socialmediaapp.Model.User;
 import com.example.socialmediaapp.R;
@@ -62,6 +62,7 @@ public class ProfileFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
 
+        // get data from UserAdapter/HomeActivity
         SharedPreferences prefs = getContext().getSharedPreferences("PREFS", MODE_PRIVATE);
         profileId = prefs.getString("profileid", "none");
 
@@ -109,14 +110,14 @@ public class ProfileFragment extends Fragment {
         });
 
         binding.followers.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), FollowerActivity.class);
+            Intent intent = new Intent(getContext(), ListActivity.class);
             intent.putExtra("id", profileId);
             intent.putExtra("title", "Followers");
             startActivity(intent);
         });
 
         binding.following.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), FollowerActivity.class);
+            Intent intent = new Intent(getContext(), ListActivity.class);
             intent.putExtra("id", profileId);
             intent.putExtra("title", "Following");
             startActivity(intent);
@@ -238,7 +239,7 @@ public class ProfileFragment extends Fragment {
     private void checkUserStatus() {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if (user == null) {
-            startActivity(new Intent(getActivity(), MainActivity.class));
+            startActivity(new Intent(getActivity(), AccountActivity.class));
             getActivity().finish();
         } else {
             //stay in current page

@@ -42,7 +42,7 @@ public class RegisterActivity extends AppCompatActivity {
             String str_password = binding.rPassword.getText().toString();
             String str_confirm_password = binding.rConfirmPassword.getText().toString();
 
-            //validate
+            //validate the input
             if (TextUtils.isEmpty(str_username)) {
                 username.setError("Username is required");
                 username.setFocusable(true);
@@ -56,10 +56,12 @@ public class RegisterActivity extends AppCompatActivity {
                 binding.rConfirmPassword.setError("Passwords do not match");
                 binding.rConfirmPassword.setFocusable(true);
             } else {
+                // register the user
                 register(str_email, str_password);
             }
         });
 
+        // if have an account, go to login activity
         binding.rHaveAccount.setOnClickListener(view -> {
             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
             startActivity(intent);
@@ -96,6 +98,7 @@ public class RegisterActivity extends AppCompatActivity {
                         reference.child(userId).setValue(hashMap);
 
                         Toast.makeText(RegisterActivity.this, "Registration succeeded.", Toast.LENGTH_SHORT).show();
+                        // redirect to HomeActivity
                         startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
                         finish();
                     } else {
@@ -114,7 +117,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        onBackPressed(); // go to previous activity
+        // go to previous activity
+        onBackPressed();
         return super.onSupportNavigateUp();
     }
 }

@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.socialmediaapp.Adapter.UserAdapter;
-import com.example.socialmediaapp.MainActivity;
+import com.example.socialmediaapp.AccountActivity;
 import com.example.socialmediaapp.Model.User;
 import com.example.socialmediaapp.PostActivity;
 import com.example.socialmediaapp.R;
@@ -32,6 +32,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -130,10 +131,13 @@ public class ContactsFragment extends Fragment {
                 userList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     User user = snapshot.getValue(User.class);
+                    // get all users except the current user
                     if (!user.getUserID().equals((firebaseUser.getUid()))) {
                         userList.add(user);
                     }
                 }
+                Collections.reverse(userList);
+
                 userAdapter.notifyDataSetChanged();
             }
 
@@ -173,7 +177,7 @@ public class ContactsFragment extends Fragment {
     private void checkUserStatus() {
         final FirebaseUser user = firebaseAuth.getCurrentUser();
         if (user == null) {
-            startActivity(new Intent(getActivity(), MainActivity.class));
+            startActivity(new Intent(getActivity(), AccountActivity.class));
             getActivity().finish();
         } else {
             //stay in current page

@@ -7,13 +7,15 @@ public class Post {
     private String postImage;
     private String postCaption;
     private String postAuthor;
+    private String postLocation;
     private long postTime;
 
-    public Post(String postID, String postImage, String postCaption, String postAuthor, long postTime) {
+    public Post(String postID, String postImage, String postCaption, String postAuthor, String postLocation, long postTime) {
         this.postID = postID;
         this.postImage = postImage;
         this.postCaption = postCaption;
         this.postAuthor = postAuthor;
+        this.postLocation = postLocation;
         this.postTime = postTime;
     }
 
@@ -50,6 +52,14 @@ public class Post {
 
     public void setPostAuthor(String postAuthor) {
         this.postAuthor = postAuthor;
+    }
+
+    public String getPostLocation() {
+        return postLocation;
+    }
+
+    public void setPostLocation(String postLocation) {
+        this.postLocation = postLocation;
     }
 
     public long getPostTime() { return postTime; }

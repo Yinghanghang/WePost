@@ -35,6 +35,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private Uri imageUri;
     private StorageReference storageRef;
+    private ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +82,8 @@ public class EditProfileActivity extends AppCompatActivity {
             uploadImage();
             finish();
         });
+
+        pd = new ProgressDialog(this);
     }
 
     @Override
@@ -103,8 +106,20 @@ public class EditProfileActivity extends AppCompatActivity {
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
+    // cancel Handler's jobs before leaving the activity
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dismissProgressDialog();
+    }
+
+    private void dismissProgressDialog() {
+        if (pd.isShowing()) {
+            pd.dismiss();
+        }
+    }
+
     private void uploadImage() {
-        ProgressDialog pd = new ProgressDialog(this);
         pd.setMessage("Uploading image");
         pd.show();
 
@@ -126,7 +141,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     HashMap<String, Object> hashMap = new HashMap<>();
                     hashMap.put("userImage", "" + myUrl);
                     databaseReference.updateChildren(hashMap);
-                    pd.dismiss();
+                    dismissProgressDialog();
                 } else {
                     Toast.makeText(EditProfileActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                 }

@@ -5,6 +5,7 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +19,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.socialmediaapp.FollowerActivity;
+import com.example.socialmediaapp.ListActivity;
 import com.example.socialmediaapp.Fragment.ProfileFragment;
 import com.example.socialmediaapp.Model.Post;
 import com.example.socialmediaapp.PostActivity;
@@ -65,6 +66,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         Post post = posts.get(position);
         PostItemBinding binding = PostItemBinding.bind(holder.itemView);
 
+        // hide the image if no image exists
         if (post.getPostImage().equals("noImage")) {
             // hide post image view
             binding.postImage.setVisibility(View.GONE);
@@ -73,6 +75,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             Glide.with(context).load(post.getPostImage()).into(binding.postImage);
         }
 
+        // hide the description if no description exists
         if (post.getPostCaption().equals("")) {
             binding.caption.setVisibility(View.GONE);
         } else {
@@ -80,18 +83,32 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             binding.caption.setText(post.getPostCaption());
         }
 
+        if (TextUtils.isEmpty(post.getPostLocation())) {
+            binding.location.setVisibility(View.GONE);
+        } else {
+            binding.location.setVisibility(View.VISIBLE);
+            binding.location.setText(post.getPostLocation());
+        }
+
+        // set the author information
         getAuthor(binding.imageProfile, binding.username, post.getPostAuthor());
+        // set the post time
         binding.time.setText(formatPostTime(post.getPostTime()));
 
+        // set the like button
         getLiked(post.getPostID(), binding.like);
+        // get number of likes
         getLikes(post.getPostID(), binding.likes);
+        // get all the comments
         getComments(post.getPostID(), binding.comments);
 
+        // set the click events
         binding.imageProfile.setOnClickListener(view -> {
             SharedPreferences.Editor editor = context.getSharedPreferences("PREFS", MODE_PRIVATE).edit();
             editor.putString("profileid", post.getPostAuthor());
             editor.apply();
 
+            // go to user profile if click the profile image
             ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new ProfileFragment()).commit();
         });
@@ -101,11 +118,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             editor.putString("profileid", post.getPostAuthor());
             editor.apply();
 
+            // go to user profile if click the username
             ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new ProfileFragment()).commit();
         });
 
         binding.postImage.setOnClickListener(view -> {
+            // go to post detail page if click post image
             Intent intent = new Intent(context, PostDetailActivity.class);
             intent.putExtra("postid", post.getPostID());
             intent.putExtra("publisherid", post.getPostAuthor());
@@ -114,6 +133,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         });
 
         binding.caption.setOnClickListener(view -> {
+            // go to post detail page if click post description
             Intent intent = new Intent(context, PostDetailActivity.class);
             intent.putExtra("postid", post.getPostID());
             intent.putExtra("publisherid", post.getPostAuthor());
@@ -126,7 +146,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             popupMenu.setOnMenuItemClickListener(menuItem -> {
                 switch (menuItem.getItemId()) {
                     case R.id.edit:
-                        //editPost(post.getPostID());
+                        // start PostActivity while passing the postid
                         Intent intent = new Intent(context, PostActivity.class);
                         intent.putExtra("key", "editPost");
                         intent.putExtra("editPostId", post.getPostID());
@@ -141,6 +161,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 }
             });
 
+            // hide edit/delete option if posts are not created by current user
             if (!post.getPostAuthor().equals(currentUser)) {
                 popupMenu.getMenu().findItem(R.id.edit).setVisible(false);
                 popupMenu.getMenu().findItem(R.id.delete).setVisible(false);
@@ -159,7 +180,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         });
 
         binding.comment.setOnClickListener(view -> {
-            //start PostDetailActivity
+            //start PostDetailActivity by passing postid and publisherid
             Intent intent = new Intent(context, PostDetailActivity.class);
             intent.putExtra("postid", post.getPostID());
             intent.putExtra("publisherid", post.getPostAuthor());
@@ -168,6 +189,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         });
 
         binding.comments.setOnClickListener(view -> {
+            //start PostDetailActivity by passing postid and publisherid
             Intent intent = new Intent(context, PostDetailActivity.class);
             intent.putExtra("postid", post.getPostID());
             intent.putExtra("publisherid", post.getPostAuthor());
@@ -175,7 +197,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         });
 
         binding.likes.setOnClickListener(v -> {
-            Intent intent = new Intent(context, FollowerActivity.class);
+            Intent intent = new Intent(context, ListActivity.class);
             intent.putExtra("id", post.getPostID());
             intent.putExtra("title", "Likes");
             context.startActivity(intent);
@@ -211,6 +233,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     private void getComments(String postId, TextView comments) {
+        // get number of comments under a post
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("comments").child(postId);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -232,6 +255,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.child(currentUser).exists()) {
+                    // if current user already liked the post
                     imageView.setImageResource(R.drawable.ic_liked);
                     imageView.setTag("liked");
                 } else {
@@ -252,6 +276,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                // get number of likes of a post
                 likes.setText(dataSnapshot.getChildrenCount() + " likes");
             }
 

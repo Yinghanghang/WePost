@@ -62,6 +62,7 @@ public class PostDetailActivity extends AppCompatActivity {
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        // get data from PostAdapter
         postId = getIntent().getStringExtra("postid");
         publisherId = getIntent().getStringExtra("publisherid");
 
@@ -105,6 +106,7 @@ public class PostDetailActivity extends AppCompatActivity {
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 snapshot.getRef().removeValue();
                                 Toast.makeText(PostDetailActivity.this, "Deleted successfully", Toast.LENGTH_SHORT).show();
+                                // after delete post, redirect to HomeActivity
                                 startActivity(new Intent(PostDetailActivity.this, HomeActivity.class));
                             }
 
@@ -145,8 +147,9 @@ public class PostDetailActivity extends AppCompatActivity {
             }
         });
 
+        // get the likes list
         binding.likes.setOnClickListener(v -> {
-            Intent intent = new Intent(PostDetailActivity.this, FollowerActivity.class);
+            Intent intent = new Intent(PostDetailActivity.this, ListActivity.class);
             intent.putExtra("id", postId);
             intent.putExtra("title", "Likes");
             startActivity(intent);
@@ -160,6 +163,7 @@ public class PostDetailActivity extends AppCompatActivity {
         loadComments();
     }
 
+    // get the data updated after edit
     @Override
     public void onRestart() {
         super.onRestart();
@@ -197,6 +201,7 @@ public class PostDetailActivity extends AppCompatActivity {
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("comments").child(postId);
 
+        // generate an id for each comment
         String commentId = reference.push().getKey();
 
         Map<String, Object> hashMap = new HashMap<>();
@@ -209,6 +214,7 @@ public class PostDetailActivity extends AppCompatActivity {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
+        // reset the comment to empty
         binding.commentEt.setText("");
     }
 
@@ -272,6 +278,13 @@ public class PostDetailActivity extends AppCompatActivity {
                 } else {
                     binding.postImage.setVisibility(View.VISIBLE);
                     Glide.with(getApplicationContext()).load(post.getPostImage()).into(binding.postImage);
+                }
+
+                if (TextUtils.isEmpty(post.getPostLocation())) {
+                    binding.location.setVisibility(View.GONE);
+                } else {
+                    binding.location.setVisibility(View.VISIBLE);
+                    binding.location.setText(post.getPostLocation());
                 }
             }
 
@@ -351,7 +364,7 @@ public class PostDetailActivity extends AppCompatActivity {
     private void redirectIfLogout() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, AccountActivity.class));
             finish();
         } else {
             //stay in current page

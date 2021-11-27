@@ -29,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
+// used by ContactsFragment and ListActivity
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     private final Context context;
     private final List<User> users;
