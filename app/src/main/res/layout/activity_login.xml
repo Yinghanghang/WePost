@@ -84,4 +84,12 @@
         android:textStyle="bold"
         android:textColor="@color/ShadowBlue" />
 
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="130dp"
+        android:layout_below="@+id/no_account_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:src="@drawable/connection2" />
+
 </RelativeLayout>

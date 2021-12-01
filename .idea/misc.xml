@@ -23,17 +23,18 @@
         <entry key="app/src/main/res/drawable/ic_security.xml" value="0.2484375" />
         <entry key="app/src/main/res/drawable/input_bg.xml" value="0.24461538461538462" />
         <entry key="app/src/main/res/drawable/round_image_view.xml" value="0.2484375" />
-        <entry key="app/src/main/res/layout/activity_account.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_account.xml" value="0.165" />
         <entry key="app/src/main/res/layout/activity_comment.xml" value="0.22916666666666666" />
         <entry key="app/src/main/res/layout/activity_edit_profile.xml" value="0.21510416666666668" />
         <entry key="app/src/main/res/layout/activity_follower.xml" value="0.22916666666666666" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.22" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/activity_list.xml" value="0.22604166666666667" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.23229166666666667" />
         <entry key="app/src/main/res/layout/activity_post.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_post_detail.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_profile.xml" value="0.23229166666666667" />
-        <entry key="app/src/main/res/layout/activity_register.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_register.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_start.xml" value="0.1" />
         <entry key="app/src/main/res/layout/comment_item.xml" value="0.22916666666666666" />
         <entry key="app/src/main/res/layout/fragment_contacts.xml" value="0.22916666666666666" />
