@@ -65,7 +65,7 @@ public class PostActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
 
-        // location of store images on cloud
+        // location of stored images on cloud
         storageRef = FirebaseStorage.getInstance().getReference("uploads");
 
         //get data through intent from previous activities' adapter (when choose "edit" menu)
@@ -254,6 +254,7 @@ public class PostActivity extends AppCompatActivity {
                 if (permission.equals(Manifest.permission.ACCESS_FINE_LOCATION) ||
                         permission.equals(Manifest.permission.ACCESS_COARSE_LOCATION)) {
                     if (grantResult == PackageManager.PERMISSION_GRANTED) {
+                        // must call updatedPostLocation() here because when user set permission the first time, the updatePostLocation() in binding.checkbox can return null
                         updatePostLocation();
                         break;
                     }

@@ -5,23 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp"
+    android:background="#FCFCFC"
     tools:context=".AccountActivity">
 
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="400dp"
+        android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_marginTop="-20dp"
+        android:layout_marginTop="65dp"
         android:cropToPadding="true"
-        android:src="@drawable/logo1"
+        android:src="@drawable/logo2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/register"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="70dp"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:text="Register"
