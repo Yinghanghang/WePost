@@ -72,9 +72,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Change Photo"
             android:layout_gravity="center"
             android:id="@+id/e_change_photo"
+            android:text="Change Photo"
             android:textColor="@color/colorPrimary"
             android:textSize="18sp"/>
 

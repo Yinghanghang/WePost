@@ -13,23 +13,23 @@
         android:id="@+id/login_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="85dp"
         android:layout_marginBottom="65dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:text="Login"
-        android:textAlignment="center"
         android:textColor="@color/ShadowBlue"
         android:textStyle="bold"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        android:textAlignment="center" />
 
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/login_title"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:layout_below="@+id/login_title"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:id="@+id/email_box">
 
@@ -46,10 +46,10 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:id="@+id/password_box"
         android:layout_below="@+id/email_box"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:passwordToggleEnabled="true">
 
@@ -68,8 +68,8 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_below="@+id/password_box"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
+        android:layout_centerHorizontal="true"
         android:backgroundTint="@color/ShadowBlue"
         android:text="Login" />
 

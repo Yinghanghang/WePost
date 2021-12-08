@@ -58,11 +58,11 @@ public class ListActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
 
-        binding.recyclerView.setHasFixedSize(true);
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.userRecyclerView.setHasFixedSize(true);
+        binding.userRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         userList = new ArrayList<>();
         userAdapter = new UserAdapter(this, userList, false);
-        binding.recyclerView.setAdapter(userAdapter);
+        binding.userRecyclerView.setAdapter(userAdapter);
 
         idList = new ArrayList<>();
         switch (title) {

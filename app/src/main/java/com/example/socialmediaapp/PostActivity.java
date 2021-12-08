@@ -77,7 +77,7 @@ public class PostActivity extends AppCompatActivity {
         if ("editPost".equals(isUpdatedKey)) {
             //update post
             actionBar.setTitle("Edit Post");
-            binding.post.setText("Update");
+            binding.post.setText("UPDATE");
             // load the original data from the post
             loadPostData(editPostId);
         } else {

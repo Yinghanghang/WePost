@@ -13,10 +13,10 @@
         android:id="@+id/login_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="55dp"
+        android:layout_marginBottom="45dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="65dp"
-        android:layout_marginBottom="45dp"
         android:text="Register"
         android:textAlignment="center"
         android:textColor="@color/ShadowBlue"
@@ -27,9 +27,9 @@
         android:layout_marginTop="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/login_title"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_below="@+id/login_title"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:id="@+id/r_usernameTIL">
 
@@ -43,9 +43,9 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:layout_below ="@+id/r_usernameTIL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below ="@+id/r_usernameTIL"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -125,7 +125,7 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="250dp"
         android:layout_below="@+id/r_have_account"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"

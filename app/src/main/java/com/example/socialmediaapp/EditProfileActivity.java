@@ -42,7 +42,6 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityEditProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Edit Profile");
 
@@ -143,7 +142,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     databaseReference.updateChildren(hashMap);
                     dismissProgressDialog();
                 } else {
-                    Toast.makeText(EditProfileActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditProfileActivity.this, "Edit profile failed", Toast.LENGTH_SHORT).show();
                 }
             }).addOnFailureListener(e -> Toast.makeText(EditProfileActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
         } else {

@@ -21,14 +21,14 @@
 
 
         <TextView
+            android:id="@+id/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/image_profile"
             android:text="username"
-            android:textStyle="bold"
-            android:textSize="16sp"
             android:textColor="@color/ShadowBlue"
-            android:id="@+id/username"/>
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"

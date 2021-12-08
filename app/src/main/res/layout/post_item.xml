@@ -125,9 +125,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="View All 20 Comments"
             android:layout_marginLeft="70dp"
             android:layout_marginTop="5dp"
+            android:text="View All 10 Comments"
             android:textColor="@color/LightGrey"
             android:id="@+id/comments"
             android:layout_marginBottom="10dp"/>

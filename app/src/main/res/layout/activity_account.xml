@@ -23,9 +23,9 @@
 
     <Button
         android:id="@+id/register"
-        android:layout_marginTop="70dp"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:layout_marginTop="70dp"
         android:text="Register"
         app:cornerRadius="32dp"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
